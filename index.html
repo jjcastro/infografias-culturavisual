@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+
+  <style type="text/css">
+    .svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.graph-container {
+  width: 60%;
+  float: right;
+}
+
+div.section-container {
+  width: 40%;
+  float: left;
+}
+
+section {
+  margin-top: 200px;
+}
+
+div.text {
+  padding: 30px;
+  margin: 0 auto;
+  background-color: #f2f2f2;
+  font-family: sans-serif;
+}
+
+#graph{
+  position: fixed;
+  top: 0px;
+  width: 50vw;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="graph-container"><div id="graph"></div></div>
+
+  <div class="section-container">
+  <section><div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+  proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div></section>
+
+  <section><div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+  proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div></section>
+  </div>
+</div>
+
+<script type="text/javascript" src="./d3v4+jetpack.js"></script>
+<script src="graph-scroll.js"></script>
+<script type="text/javascript" src="./bubbles.js"></script>
+</body>
+</html>
