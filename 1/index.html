@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+
+  <style type="text/css">
+
+/* lora-regular - latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/lora-v12-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Lora Regular'), local('Lora-Regular'),
+       url('../fonts/lora-v12-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/lora-v12-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/lora-v12-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/lora-v12-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/lora-v12-latin-regular.svg#Lora') format('svg'); /* Legacy iOS */
+}
+
+body {
+  font-family: 'Lora';
+}
+
+    .svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.graph-container {
+  width: 60%;
+  float: right;
+}
+
+div.section-container {
+  width: 40%;
+  /*float: left;*/
+  margin-bottom: 100px;
+}
+
+section {
+  margin-top: 200px;
+  opacity: 0.3;
+}
+
+div.text {
+  padding: 30px;
+  margin: 0 auto;
+  background-color: #f2f2f2;
+  /*font-family: sans-serif;*/
+}
+
+#graph{
+  position: fixed;
+  top: 0px;
+  width: 50vw;
+}
+
+section.graph-scroll-active {
+  opacity: 1;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="graph-container"><div id="graph"></div></div>
+
+  <div class="section-container">
+  <section><div class="text">La metáfora es un tropo retórico que fue ampliamente empleado para el discurso visual. Los tropos alteraban el significado del discurso, de modo que afectan el sentido de lo comunicado. Un conjunto de metáforas componían una alegoría. Esta era la intensificación del valor simbólico de lo representado. Aunque había metáforas en la mayor parte de los temas, había pinturas que se dedicaban a representar alegorías. Aunque no había una clasificación explícita, se pueden agrupar en relación a su temática específica. Sobresalen las alegorías a la virgen.</div></section>
+
+  <section><div class="text">No todas las regiones coloniales generaron este tipo de pintura. Este es uno de los temas con mayor desigualdad en su representación. La pintura alegórica es más usual en aquellas regiones que tuvieron una mayor complejidad en su cultura, ya sea por la relación con la visualidad anterior a la conquista, o por el empeño de las comunidades religiosas. Es el caso de México y Perú.</div></section>
+
+  <section><div class="text">La pintura alegórica por su naturaleza es una de los temas en los que más se desarrollaron las formas escritas. Cartelas, filacterias, inscripciones y cintas, complementaban los simbolismos de las alegorías. De hecho, una forma alegórica compleja que surgió en esta época fue el emblema, una combinación de imagen y palabra escrita.</div></section>
+
+  <section><div class="text">La particularidad de la pintura alegórica es que pretende convertir el tema tratado en materia de reflexión y objeto de visualización. De esta manera, su función es aportarle elementos al observador para meditar sobre virtudes específicas. No es un tipo de pintura que se enmarque dentro de necesidades devocionales, por lo tanto no la encargaban los donantes, como lo muestran los datos. Solo un 6% tenía alguna posible relación con donantes.</div></section>
+
+  <section><div class="text">La pintura alegórica es escasamente devocional, es una propuesta  explícita para la meditación. Por esta razón el 50%  de sus escenarios están dispuestos con estructuras simbólicas. Algo más del 25% define sus temas dentro de espacios terrestres. Una pequeña proporción se define con trasfondos escatológicos.</div></section>
+
+  <section><div class="text">Las pinturas alegóricas definen características específicas que están relacionadas con su función. El 78% tienen personajes colectivos, es decir, representan interacciones simbólicas entre los representados. Por su naturaleza alegórica, el 77% de las escenas son compuestas, es decir tienen un movimiento que representan diferentes situaciones dentro de una misma composición. Mientras es equitativa la presencia de hombres y mujeres, los niños son escasos, lo mismo que los personajes no religiosos.</div></section>
+
+  <section><div class="text">El soporte más utilizado es la pintura sobre tela, y a diferencia de otros temas, la madera y la lámina son poco utilizados.  Se puede destacar la presencia de lo alegórico en un soporte que no es común, el biombo. El emblema y la alegoría se empleaban con mucha frecuencia en artefactos domésticos. Lo biombos suelen tener este tipo de representación.</div></section>
+
+  <section><div class="text">Algunos símbolos son más frecuentes que otros. Se destaca la aureola de rayos, la cruz y los querubines, presentes en un promedio de 23% de las pinturas. Por lo general priman los símbolos religiosos, pero hay algunos seculares que aluden a la autoridad real: la corona, el libro y el mando.</div></section>
+
+  <section><div class="text">El 68% de la pintura alegórica es anónima. Sin embargo se puede destacar que muchas de estas se atribuyen a pintores de las regiones suramericanas, donde parece que se privilegia estas representaciones. </div></section>
+
+  <section><div class="text">Los lugares donde más se encuentra este tipo de pintura son las cabezas de reinos y virreinatos, Como México y Lima. Pero a veces coincide con los lugares donde se produce la pintura como cuzco y Quito; otras veces en aquellos lugares donde hubo una intensa vida conventual, como Arequipa y Puebla. Estos eran los principales consumidores de alegorías.</div></section>
+
+
+  </div>
+</div>
+
+<script type="text/javascript" src="../d3v4+jetpack.js"></script>
+<script src="../graph-scroll.js"></script>
+<script type="text/javascript" src="../bubbles.js"></script>
+</body>
+</html>

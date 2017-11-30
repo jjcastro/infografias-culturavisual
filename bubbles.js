@@ -1,14 +1,14 @@
-d3.csv("data.csv", function(data){
+let width = 600;
+let height = 600;
 
-  let width = 600;
-  let height = 600;
+var color = d3.scaleLinear()
+  .range(["#CBB5A0", "#C82528"]); 
+color.domain([0, 150]);
+
+var runViz = function(data){
 
   let maxRadius = d3.max(data, (d) => { return parseFloat(d.conteo); })
   let minRadius = d3.min(data, (d) => { return parseFloat(d.conteo); })
-
-  var color = d3.scaleLinear()
-    .range(["#CBB5A0", "#C82528"]); 
-  color.domain([0, 150]);
 
   let svg = d3.selectAll('#graph')
              .append("div")
@@ -17,18 +17,24 @@ d3.csv("data.csv", function(data){
              .attr("preserveAspectRatio", "xMinYMin meet")
              .attr("viewBox", "0 0 600 800")
              .append('g')
-             .attr('transform', 'translate(0, 0)')
+             .attr('transform', function(i, a) {
+              console.log(a);
+              return 'translate(0, 0)';
+             })
 
   let colors = d3.scaleOrdinal(d3.schemePaired);
 
   let simulation = d3.forceSimulation()
-                    .force('x', d3.forceX(width/2).strength(0.5))
-                    .force('y', d3.forceY(height/2).strength(0.5))
+                    .force('x', d3.forceX(width/2).strength(0.05))
+                    .force('y', d3.forceY(height/2).strength(0.05))
                     .force('collide', d3.forceCollide((d) => { return r(d.conteo) + 1; }))
 
   let r = d3.scaleSqrt()
             .domain([minRadius, maxRadius])
-            .range([15,100])
+            .range([data.length > 100 ? 5 : 15,
+                    data.length > 100 ? 25 : 80])
+
+  console.log(data.length);
 
   let circles = svg.selectAll('circles')
                 .data(data)
@@ -44,14 +50,12 @@ let texts = svg.selectAll(null)
     .text(d => d.pais)
     .attr('fill', 'white')
     .attr('text-anchor', 'middle')
-    .attr('font-size', 15)
+    .attr('font-size', data.length > 100 ? 10 : 15)
     .attr('font-weight', 600)
-    .style('font-family', 'sans-serif')
-    .style('opacity',function(d) {
+    // .style('font-family', 'sans-serif')
+    .each(function(d) {
       if(this.getBBox().width > 2*r(d.conteo))
-        return 0;
-      else
-        return 1;
+        this.remove()
     });
 
 
@@ -72,15 +76,24 @@ let texts = svg.selectAll(null)
   }
 
   simulation.nodes(data)
-    .on('tick', ticked)
-});
+    .on('tick', ticked);
+};
 
 var gs = d3.graphScroll()
-  .container(d3.select('.container'))
-  .graph(d3.selectAll('#graph'))
-  .eventId('uniqueId1')  // namespace for scroll and resize events
-  .sections(d3.selectAll('div > section'))
-  // .offset(innerWidth < 900 ? innerHeight - 30 : 200)
+  // .eventId('uniqueId1')  // namespace for scroll and resize events
+  .sections(d3.selectAll('.section-container > section'))
+  .offset(innerWidth < 900 ? innerHeight - 30 : 200)
   .on('active', function(i){
-        console.log(i);
+    console.log(i);
+
+    d3.select("#graph")
+      .selectAll("*")
+      .transition()
+
+      .style('opacity', '0')
+      .on("end", function() {
+        this.remove();
+      });
+
+    d3.csv("" + i + ".csv", runViz);
   })
