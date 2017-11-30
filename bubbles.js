@@ -3,7 +3,7 @@ let height = 600;
 
 var color = d3.scaleLinear()
   .range(["#CBB5A0", "#C82528"]); 
-color.domain([0, 150]);
+
 
 var runViz = function(data){
 
@@ -22,8 +22,6 @@ var runViz = function(data){
               return 'translate(0, 0)';
              })
 
-  let colors = d3.scaleOrdinal(d3.schemePaired);
-
   let simulation = d3.forceSimulation()
                     .force('x', d3.forceX(width/2).strength(0.05))
                     .force('y', d3.forceY(height/2).strength(0.05))
@@ -32,7 +30,9 @@ var runViz = function(data){
   let r = d3.scaleSqrt()
             .domain([minRadius, maxRadius])
             .range([data.length > 100 ? 5 : 15,
-                    data.length > 100 ? 25 : 80])
+                    data.length > 100 ? 40 : 80])
+
+            color.domain([0, maxRadius]);
 
   console.log(data.length);
 
