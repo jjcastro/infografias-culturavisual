@@ -11,57 +11,134 @@ var barrasViz = function(data) {
 
   // set the dimensions and margins of the graph
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
-      width = 800 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = 1000 - margin.left,
+      height = 1300 - margin.top - margin.bottom;
 
-  // set the ranges
-  var y = d3.scaleBand()
-            .range([height, 0])
-            .padding(0.1);
+  let svg = d3.selectAll('#graph')
+       .append("div")
+       .classed("svg-container", true)
+       .append('svg')
+       .attr("preserveAspectRatio", "xMinYMin meet")
+       .attr("viewBox", "0 0 1010 1000")
+       .append('g')
+       .attr('transform', function(i, a) {
+         return 'translate(50, 100)';
+       });
 
-  var x = d3.scaleLinear()
-            .range([0, width]);
-            
-  // append the svg object to the body of the page
-  // append a 'group' element to 'svg'
-  // moves the 'group' element to the top left margin
-  var svg = d3.select("#graph").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
+  var num = 4;
+  var currentMaxWidth = 20;
 
-  // format the data
-  data.forEach(function(d) {
-    d.v = +d.v;
-  });
+  for (var i = 1; i <= num; i++) {
+    var height = 0;
+    var latest = null;
+    var maxWidth = -1;
 
-  console.log(data.map(function(d) { return d.c2; }));
+    svg.selectAll(".bar" + i)
+        .data(data)
+        .enter()
+        .append('text')
+        .attr("x", currentMaxWidth)
+        .attr("y", function(d,i) {
+          height += 30;
+          return height;
+        })
+        .text(function(d) {
+          if (latest == d["c" + i]) {
+            return "";
+          } else {
+            latest = d["c" + i];
+            // console.log("c" + i);
+            return d["c" + i];
+          }
+        })
+        .each(function(d,i) {
+          var width = this.getComputedTextLength();
+          if (width > maxWidth) {
+            maxWidth = width;
+          }
+        });
 
-  // Scale the range of the data in the domains
-  x.domain([0, d3.max(data, function(d){ return d.v; })])
-  y.domain(data.map(function(d) { return d.c2; }));
-  //y.domain([0, d3.max(data, function(d) { return d.v; })]);
+    height = 0;
+    latest = null;
 
-  // append the rectangles for the bar chart
-  svg.selectAll(".bar")
+    svg.selectAll(".lines")
+    .data(data)
+    .enter()
+    .append("line")
+      .attr("stroke", "red")
+      .attr("x1", currentMaxWidth)
+      .attr("y1", function(d) {
+        d["height"] = height + 10;
+        height += 30;
+        return d["height"];
+      })
+      .attr("x2", currentMaxWidth + maxWidth)
+      .attr("y2", function(d) {
+        return d["height"];
+      })
+      .attr("opacity", function(d) {
+        if (latest != d["c" + i]) {
+          latest = d["c" + i];
+          return 1;
+        } else {
+          return 0;
+        }
+      })
+
+    currentMaxWidth += maxWidth + 10;
+  }
+
+  var myScale = d3.scaleLinear()
+    .domain([0, d3.max(data, function(d) {
+      return parseInt(d.v);
+    })])
+    .range([currentMaxWidth, 930]);
+
+  var t = d3.transition()
+    .duration(400); 
+
+  var height = 15;
+  svg.selectAll(".barras")
+    .data(data)
+    .enter()
+    .append("rect")
+      .attr("fill", "#B93631")
+      .attr("x", currentMaxWidth - 10)
+      .attr("y", function(d) {
+        var curr = height;
+        height += 30;
+        return curr;
+      })
+      .attr("height", 15)
+      .transition(t)
+        .delay(200)
+        .attr("width", function(d) {
+          return myScale(d['v']) - currentMaxWidth;
+        });
+
+  var height = 15;
+  var text3 = svg.selectAll("omg")
       .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      //.attr("x", function(d) { return x(d.v); })
-      .attr("width", function(d) {return x(d.v); } )
-      .attr("y", function(d) { return y(d.c2); })
-      .attr("height", y.bandwidth());
+      .enter()
+      .append("text");
 
-  // add the x Axis
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-
-  // add the y Axis
-  svg.append("g")
-      .call(d3.axisLeft(y));
+  var textLabels3 = text3
+    .text( function (d) {
+      return parseInt(d['v']);
+    })
+    .attr("text-anchor", "middle")
+    .attr("font-family", "Lora")
+    .attr("font-size", "16px")
+    .attr("fill", "black")
+    .attr("transform", "translate(0,12)")
+    .attr("x", function (d) {
+      return myScale(d['v']) + 5;
+    })
+    .attr("y", function (d) {
+      var curr = height;
+      height += 30;
+      return curr;
+    });
 }
 
 var runViz = function(data){
@@ -159,10 +236,10 @@ var gs = d3.graphScroll()
         map[e] = true;
       });
 
-      console.log(map);
+      // console.log(map);
 
-      console.log(map["" + i]);
-      console.log(map["" + i]);
+      // console.log(map["" + i]);
+      // console.log(map["" + i]);
 
       d3.csv("" + i + ".csv", map[i] ? barrasViz : runViz);
     });

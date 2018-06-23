@@ -33,7 +33,7 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -63,7 +63,7 @@ div.text {
 #graph{
   position: fixed;
   top: 0px;
-  width: 50vw;
+  width: 55vw;
 }
 
 section.graph-scroll-active {
