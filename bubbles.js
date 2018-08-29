@@ -1,3 +1,5 @@
+const HINT = "Usa el mouse para ver los datos."
+
 let width = 600;
 let height = 600;
 
@@ -16,6 +18,7 @@ var barrasViz = function(data) {
 
   let svg = d3.selectAll('#graph')
        .append("div")
+       .style('overflow', 'scroll')
        .classed("svg-container", true)
        .append('svg')
        .attr("preserveAspectRatio", "xMinYMin meet")
@@ -141,6 +144,8 @@ var barrasViz = function(data) {
     });
 }
 
+// =====================
+
 var runViz = function(data){
 
   let maxRadius = d3.max(data, (d) => { return parseFloat(d.conteo); })
@@ -178,6 +183,12 @@ var runViz = function(data){
                 .append('circle')
                 .attr('fill', (d) => { return color(d.conteo); })
                 .attr('r', (d) => { return r(d.conteo); })
+                .on('mouseover', function(d) {
+                  const val = Number(d.conteo).toFixed(0);
+                  const title = d.pais;
+                  const text = title + ": " + val + " obras";
+                  divTooltip.text(text);
+                });
 
   let texts = svg.selectAll(null)
       .data(data)
@@ -186,28 +197,51 @@ var runViz = function(data){
       .text(d => d.pais)
       .attr('fill', 'white')
       .attr('text-anchor', 'middle')
-      .attr('font-size', data.length > 100 ? 10 : 15)
+      .attr('font-size', data.length > 100 ? 8 : 10)
+      // .attr('font-size', data.length > 100 ? 10 : 15)
       .attr('font-weight', 600)
       // .style('font-family', 'sans-serif')
       .each(function(d) {
-        if(this.getBBox().width > 2*r(d.conteo))
+        if(this.getBBox().width > 2*r(d.conteo)) {
           this.remove()
+          d.hidden = true;
+        }
+      });
+
+  let pctTexts = svg.selectAll(null)
+      .data(data)
+      .enter()
+      .append('text')
+      .text(d => '(' + Number(d.conteo).toFixed(0) + ')')
+      .attr('fill', 'white')
+      .attr('text-anchor', 'middle')
+      .attr('font-size', data.length > 100 ? 8 : 10)
+      // .attr('font-size', data.length > 100 ? 10 : 15)
+      .attr('font-weight', 600)
+      // .style('font-family', 'sans-serif')
+      .each(function(d) {
+        if (d.hidden)
+          this.remove();
       });
 
 
     let ticked = () => {
       circles.attr('cx', (data) => {
         return data.x
-      })
-      .attr('cy', (data) => {
+      }).attr('cy', (data) => {
         return data.y
       });
 
       texts.attr('x', (data) => {
         return data.x
-      })
-      .attr('y', (data) => {
-        return data.y + 5
+      }).attr('y', (data) => {
+        return data.y - 2
+      });
+
+      pctTexts.attr('x', (data) => {
+        return data.x
+      }).attr('y', (data) => {
+        return data.y + 10
       });
     }
 
@@ -215,8 +249,28 @@ var runViz = function(data){
       .on('tick', ticked);
 };
 
+var divTooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("position", "fixed")
+  .style("top", "50px")
+  .style("right", "50px")
+  .style("text-align", "left");
+
+var button = d3.select("body").append("a")
+  .attr("id", "next")
+  .attr("href", "#")
+  .style("position", "fixed")
+  .style("bottom", "50px")
+  .style("right", "50px")
+  .style("text-align", "left")
+  .text("Siguente");
+
+$('#next').click(function(){
+    var cls = $(".graph-scroll-active").next().offset().top;
+    $("html, body").animate({scrollTop: cls - 30}, "fast");
+});
+
 var gs = d3.graphScroll()
-  // .eventId('uniqueId1')  // namespace for scroll and resize events
   .sections(d3.selectAll('.section-container > section'))
   .offset(innerWidth < 900 ? innerHeight - 30 : 200)
   .on('active', function(i){
@@ -236,10 +290,8 @@ var gs = d3.graphScroll()
         map[e] = true;
       });
 
-      // console.log(map);
-
-      // console.log(map["" + i]);
-      // console.log(map["" + i]);
+      divTooltip.text(HINT);
+      divTooltip.style("display", map[i] ? "none" : "block");
 
       d3.csv("" + i + ".csv", map[i] ? barrasViz : runViz);
     });
