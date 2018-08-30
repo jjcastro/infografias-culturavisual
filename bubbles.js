@@ -18,7 +18,6 @@ var barrasViz = function(data) {
 
   let svg = d3.selectAll('#graph')
        .append("div")
-       .style('overflow', 'scroll')
        .classed("svg-container", true)
        .append('svg')
        .attr("preserveAspectRatio", "xMinYMin meet")
