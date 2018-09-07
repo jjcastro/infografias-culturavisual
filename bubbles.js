@@ -141,6 +141,13 @@ var barrasViz = function(data) {
       height += 30;
       return curr;
     });
+
+
+  var units = svg
+      .append("text")
+      .text("Número de obras")
+      .attr("x", currentMaxWidth - 10)
+      .attr("y", -15);
 }
 
 // =====================
@@ -201,7 +208,7 @@ var runViz = function(data){
       .attr('font-weight', 600)
       // .style('font-family', 'sans-serif')
       .each(function(d) {
-        if(this.getBBox().width > 2*r(d.conteo)) {
+        if (this.getBBox().width > 2*r(d.conteo)) {
           this.remove()
           d.hidden = true;
         }
@@ -211,7 +218,7 @@ var runViz = function(data){
       .data(data)
       .enter()
       .append('text')
-      .text(d => '(' + Number(d.conteo).toFixed(0) + ')')
+      .text(d =>  d["Participación"] + ' (' + Number(d.conteo).toFixed(0) + ')')
       .attr('fill', 'white')
       .attr('text-anchor', 'middle')
       .attr('font-size', data.length > 100 ? 8 : 10)
@@ -219,8 +226,10 @@ var runViz = function(data){
       .attr('font-weight', 600)
       // .style('font-family', 'sans-serif')
       .each(function(d) {
-        if (d.hidden)
+        if (d.hidden || this.getBBox().width > 2*r(d.conteo)) {
           this.remove();
+          d.numsHidden = true;
+        }
       });
 
 
@@ -234,7 +243,7 @@ var runViz = function(data){
       texts.attr('x', (data) => {
         return data.x
       }).attr('y', (data) => {
-        return data.y - 2
+        return data.y + (data.numsHidden ? 2 : -2)
       });
 
       pctTexts.attr('x', (data) => {
