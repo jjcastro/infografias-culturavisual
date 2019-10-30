@@ -271,7 +271,7 @@ var button = d3.select("body").append("a")
   .style("bottom", "50px")
   .style("right", "50px")
   .style("text-align", "left")
-  .text("Siguente");
+  .text("Siguiente");
 
 $('#next').click(function(){
     var cls = $(".graph-scroll-active").next().offset().top;
